@@ -12,8 +12,8 @@ def read_words(words_file):
     return [word for line in open(words_file, 'r') for word in line.split()]
 
 #open listing, set up filenames
-spam_files = read_words('fics/badlotrficlist.txt')
-ham_files = read_words('fics/goodlotrficlist.txt')
+spam_files = read_words('data/fics/ficsbad.txt')
+ham_files = read_words('data/fics/ficsgood.txt')
 num_spam = len(spam_files)
 num_ham = len(ham_files)
 
@@ -22,19 +22,14 @@ num_ham = len(ham_files)
 i = 0
 allD = []
 for i in spam_files:
-    D = list(set(read_words('fics/' + i)))
+    D = list(set(read_words('data/fics/' + i)))
     allD.append(D)
-    i++
-    print(i)
 for i in ham_files:
-    D = list(set(read_words('fics/' + i)))
+    D = list(set(read_words('data/fics/' + i)))
     allD.append(D)
-    i++
-    print(i)
 number_of_files = len(allD)
 #run entire algorithm ten times
 for run in range (0,10):
-    print('run ' + run)
     #get random indexes for test set. The rest is training
     range_of_files = range (0,number_of_files)
     test_set = random.sample (range_of_files,number_of_files/10)
@@ -106,7 +101,7 @@ for run in range (0,10):
         arg_max_ham += math.log(second_value_ham)
         arg_max_spam += math.log(second_value_spam)
         #check which is greater, and assign classification
-        solution = arg_max_spam>arg_max_ham
+        solution = (arg_max_spam/arg_max_ham) > .5
         #Tally up metrics by comparing to actual
         actual = i<num_spam
         if solution: # if it is predicted to be spam
