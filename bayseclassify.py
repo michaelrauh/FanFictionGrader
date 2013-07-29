@@ -12,8 +12,8 @@ def read_words(words_file):
     return [word for line in open(words_file, 'r') for word in line.split()]
 
 #open listing, set up filenames
-spam_files = read_words('data/fics/ficsbad.txt')
-ham_files = read_words('data/fics/ficsgood.txt')
+spam_files = read_words('data/fics/badhp.txt')
+ham_files = read_words('data/fics/goodhp.txt')
 num_spam = len(spam_files)
 num_ham = len(ham_files)
 
@@ -29,7 +29,7 @@ for i in ham_files:
     allD.append(D)
 number_of_files = len(allD)
 #run entire algorithm ten times
-for run in range (0,10):
+for run in range (0,100):
     #get random indexes for test set. The rest is training
     range_of_files = range (0,number_of_files)
     test_set = random.sample (range_of_files,number_of_files/10)
@@ -126,9 +126,9 @@ for run in range (0,10):
         total_f_score += f_score
 # print average f score
 print ("Average F score: ")
-print(total_f_score/10)
+print(total_f_score/100)
 print ("Average Percent correct: ")
-print(total_percent_correct/10)
+print(total_percent_correct/100)
 
 #1000 runs on spam/ham
 #Average F score: 
