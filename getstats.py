@@ -34,11 +34,11 @@ def get_coordinates():
         paragraph_lengths = paragraph_length_list(doc) #get paragraph lengths
         avg_paragraph_length = get_avg_paragraph_length (paragraph_lengths)
         paragraph_length_var = get_paragraph_length_var(paragraph_lengths,avg_paragraph_length)
-        run_on_density = get_run_on_count(doc)/length
+        run_on_density = get_run_on_count(sentence_lengths)/length
         bad_capitalization_density = get_bad_capitalization_count(doc)/length
         contraction_density = get_contraction_count(doc)/length
-        non_said_quote_density = get_non_said_quote_count(doc)/length
         doc = doc.split() #split doc into list of words
+        non_said_quote_density = get_non_said_quote_count(doc,dialog_density * length)/length
         avg_syllables_per_word = get_avg_syllables_per_word(doc)
         flesch_kincaid = get_flesch_kincaid(len(doc),len(sentence_lengths),avg_syllables_per_word)
         word_repitition_density = get_word_repitition_count(doc)/length
@@ -55,7 +55,7 @@ def get_coordinates():
         made_up_word_density = get_made_up_word_count(doc,non_dictionary_words)/length
 
         #put into a single coordinate. Final version will remove names
-        coordinates1 = [length,dialog_density,ellipsis_density,parenthesis_density]
+        coordinates1 = [dialog_density,ellipsis_density,parenthesis_density] # length taken out
         coordinates2 = [comma_density,avg_sentence_length,sentence_length_var,common_error_density,banned_word_density,repeated_punctuation_density]
         coordinates3 = [avg_chapter_lengths,chapter_length_var,long_chapter_density,avg_paragraph_length,paragraph_length_var,run_on_density]
         coordinates4 = [bad_capitalization_density,contraction_density,non_said_quote_density,avg_syllables_per_word,flesch_kincaid]
