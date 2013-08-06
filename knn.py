@@ -16,7 +16,7 @@ number_of_coordinates=len(coordinates)
 for run in range (0,10):
     #get random indexes for test set. The rest is training
     range_of_files = range (0,number_of_coordinates)
-    test_set = random.sample (range_of_files,number_of_coordinates/10)
+    test_set = random.sample (range_of_files,number_of_coordinates/510)
     
     #set up metrics
     true_positive = 0.0
@@ -59,8 +59,8 @@ for run in range (0,10):
     if (precision != 0 or recall != 0):
         f_score = 2 * ((precision * recall)/(precision + recall))
         total_f_score += f_score
-    percent_correct = (true_positive + true_negative)/(true_positive + true_negative + false_positive + false_negative)
-    total_percent_correct += percent_correct
+        percent_correct = (true_positive + true_negative)/(true_positive + true_negative + false_positive + false_negative)
+        total_percent_correct += percent_correct
 # print average f score
 print ("Average F score: ")
 print(total_f_score/10)
