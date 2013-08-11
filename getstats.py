@@ -27,7 +27,7 @@ for doc in files:
     #tag counts
     possible_tags = ('NONE','CC','CD','DT','EX','FW','IN','JJ','JJR','JJS','LS','MD','NN','NS','NNP','NNPS','PDT','POS','PRP','PRP$','RB','RBR','RBS','RP','SYM','TO','UH','VB','VBD','VBG','VBN','VBP','VBZ','WDT','WP','WPS','WRB','\"','...','(',',','!','?',';',':')
     for tag in possible_tags:
-        coordinates.append(doc_list.count(tag)/length)
+        coordinates.append(tags.count(tag)/length)
     #other metrics
     coordinates.append(get_paragraph_length_var(paragraph_lengths,avg_paragraph_length))
     coordinates.append(get_run_on_count(sentence_lengths,avg_sentence_length,sentence_length_var)/length)
