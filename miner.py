@@ -1,6 +1,6 @@
 import urllib2
 links = []
-for i in range(min,max):
+for i in range(0,3000):
     print(i)
     response = urllib2.urlopen('http://www.fanfiction.net/book/Harry-Potter/?&srt=4&lan=1&r=10&p=' + str(i))
     html = response.read()
@@ -14,7 +14,7 @@ for i in range(min,max):
             if word[11] == '1' and word[12] =='/':
                 links.append("http://www.fanfiction.net" + word)       
 links = list(set(links))
-f = open("links.txt",'w')
+f = open("goodlinks.txt",'w')
 for link in links:
     f.write(link)
     f.write('\n')

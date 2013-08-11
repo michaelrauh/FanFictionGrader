@@ -39,9 +39,19 @@ def paragraph_length_list(doc):
 
 #This will be an nltk tagger call
 def lexical_tags_list(doc):
-    pairs = nltk.pos_tag(doc)
-    zipped = zip(*pairs)
-    return zipped[1] #zipped[0] is the words
+    sentences = doc.split('.')
+    tags = []
+    i=0
+    print(len(sentences))
+    for sentence in sentences:
+        i+=1
+        print(i)
+        tokens = nltk.word_tokenize(sentence)
+        pairs = nltk.pos_tag(tokens)
+        zipped = zip(*pairs)
+        if (len(zipped) > 1):
+            tags+=zipped[1]
+    return tags
 
 #METRICS
 #After document is read to string:
