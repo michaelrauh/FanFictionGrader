@@ -10,51 +10,38 @@ for i in spam_files:
 for i in ham_files:
     document = read_to_string('data/fics/' + i)
     files.append(document)
-def get_num_spam():
-    return num_spam
-def get_coordinates():
-    all_coordinates =[]
-    for doc in files:
-        length=get_length(doc)
-        dialog_density = get_dialog_count(doc)/length
-        ellipsis_density = get_ellipsis_count(doc)/length
-        parenthesis_density = get_parenthesis_count(doc)/length
-        comma_density = get_comma_count(doc)/length
-        exclamation_density = get_exclamation_count(doc)/length
-        question_density = get_question_count(doc)/length
-        sentence_lengths = sentence_length_list(doc) # get list of sentence lengths
-        avg_sentence_length=get_avg_sentence_length(sentence_lengths)
-        sentence_length_var = get_sentence_length_var(sentence_lengths,avg_sentence_length)
-        common_error_density = get_common_error_count(doc)/length
-        banned_word_density = get_banned_word_count(doc)/length
-        paragraph_lengths = paragraph_length_list(doc) #get paragraph lengths
-        avg_paragraph_length = get_avg_paragraph_length (paragraph_lengths)
-        paragraph_length_var = get_paragraph_length_var(paragraph_lengths,avg_paragraph_length)
-        run_on_density = get_run_on_count(sentence_lengths,avg_sentence_length,sentence_length_var)/length
-        bad_capitalization_density = get_bad_capitalization_count(doc)/length
-        contraction_density = get_contraction_count(doc)/length
-        doc = doc.split() #split doc into list of words
-        avg_syllables_per_word = get_avg_syllables_per_word(doc)
-        flesch_kincaid = get_flesch_kincaid(len(doc),len(sentence_lengths),avg_syllables_per_word)
-        word_repitition_density = get_word_repitition_count(doc)/length
-        leading_word_density = get_leading_word_count(doc)/length
-        tags = lexical_tags_list (doc) #get tags
-        proper_noun_density = get_proper_noun_count(tags)/length
-        adverb_density = get_adverb_count(tags)/length
-        adjective_density = get_adjective_count(tags)/length
-        noun_density = get_noun_count(tags)/length
-        doc = set(doc) #convert doc to set
-        lexical_density = get_lexical_count(doc)/length
-        non_dictionary_word_density = get_non_dictionary_word_count(doc,word_list)/length #get non-dictionary words
-        
+    
+all_coordinates =[]
+for doc in files:
+    #helpers
+    coordinates = []
+    length=float(get_length(doc))
+    sentence_lengths = sentence_length_list(doc) # get list of sentence lengths
+    paragraph_lengths = paragraph_length_list(doc) #get paragraph lengths
+    doc_list = nltk.word_tokenize(doc) #split doc into list of words
+    tags = lexical_tags_list (doc_list) #get tags
+    doc_set = set(doc) #convert doc to set
 
-        #put into a single coordinate. Final version will remove names
-        coordinates1 = [dialog_density,ellipsis_density,parenthesis_density] # length taken out
-        coordinates2 = [comma_density,exclamation_density,question_density,avg_sentence_length,sentence_length_var,common_error_density,banned_word_density]
-        coordinates3 = [avg_paragraph_length,paragraph_length_var,run_on_density]
-        coordinates4 = [bad_capitalization_density,contraction_density,avg_syllables_per_word,flesch_kincaid]
-        coordinates5 = [word_repitition_density,leading_word_density,proper_noun_density,adverb_density,adjective_density,noun_density]
-        coordinates6 = [lexical_density,non_dictionary_word_density]
-        coordinates = coordinates1 + coordinates2 +coordinates3 +coordinates4 +coordinates5 +coordinates6
-        all_coordinates.append(coordinates)
-    return all_coordinates
+    #reused metrics
+    avg_sentence_length = get_avg_sentence_length(sentence_lengths)
+    coordinates.append(avg_sentence_length)
+    avg_syllables_per_word = get_avg_syllables_per_word(doc_list)
+    coordinates.append(avg_syllables_per_word)
+    avg_paragraph_length = get_avg_paragraph_length (paragraph_lengths)
+    coordinates.append(avg_paragraph_length)
+    sentence_length_var = get_sentence_length_var(sentence_lengths,avg_sentence_length)
+    coordinates.append(sentence_length_var)
+
+    #tag counts
+    possible_tags = ('CC','CD','DT','EX','FW','IN','JJ','JJR','JJS','LS','MD','NN','NS','NNP','NNPS','PDT','POS','PRP','PRP$','RB','RBR','RBS','RP','SYM','TO','UH','VB','VBD','VBG','VBN','VBP','VBZ','WDT','WP','WPS','WRB','\"','...','(',',','!','?',';',':')
+    for tag in possible_tags:
+        coordinates.append(doc_list.count(tag)/length)
+    #other metrics
+    coordinates.append(get_paragraph_length_var(paragraph_lengths,avg_paragraph_length))
+    coordinates.append(get_run_on_count(sentence_lengths,avg_sentence_length,sentence_length_var)/length)
+    coordinates.append(get_bad_capitalization_count(doc)/length)
+    coordinates.append(get_flesch_kincaid(len(doc_list),len(sentence_lengths),avg_syllables_per_word))
+    coordinates.append(get_word_repitition_count(doc_list)/length)
+    coordinates.append(get_lexical_count(doc_set)/length)
+    coordinates.append(get_non_dictionary_word_count(doc_set,word_list)/length)
+    all_coordinates.append(coordinates)

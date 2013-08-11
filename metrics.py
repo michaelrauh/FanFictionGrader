@@ -1,5 +1,7 @@
 import string
 import math
+import nltk
+from nltk.corpus import cmudict
 #HELPERS
 #read file into string
 def read_to_string(filename):
@@ -9,6 +11,15 @@ def read_to_string(filename):
 #read file into list of words
 def read_to_list(words_file):
     return [word for line in open(words_file, 'r') for word in line.split()]
+
+#find number of syllables with nltk
+from nltk.corpus import cmudict
+d = cmudict.dict()
+def syllables(word):
+    if word in d:
+        return max([len(list(y for y in x if y[-1].isdigit())) for x in d[word.lower()]])
+    else:
+        return 0
 
 #returns list of sentence lengths
 def sentence_length_list(doc):
@@ -28,30 +39,14 @@ def paragraph_length_list(doc):
 
 #This will be an nltk tagger call
 def lexical_tags_list(doc):
-    return [0,0]
+    pairs = nltk.pos_tag(doc)
+    zipped = zip(*pairs)
+    return zipped[1] #zipped[0] is the words
 
 #METRICS
 #After document is read to string:
 def get_length(document):
     return len(document)
-
-def get_dialog_count(document):
-    return document.count('\"')
-
-def get_ellipsis_count(document):
-    return document.count('...')
-
-def get_parenthesis_count(document):
-    return document.count('(')
-
-def get_comma_count(document):
-    return document.count (',')
-
-def get_exclamation_count(document):
-    return document.count('!')
-
-def get_question_count(document):
-    return document.count('?')
 
 def get_avg_sentence_length(sentence_lengths):
     return sum(sentence_lengths)/len(sentence_lengths)
@@ -59,12 +54,6 @@ def get_avg_sentence_length(sentence_lengths):
 def get_sentence_length_var(sentence_lengths,avg_sentence_length):
     differences = [(x-avg_sentence_length)**2 for x in sentence_lengths]
     return math.sqrt(sum(differences)/len(sentence_lengths))
-
-def get_common_error_count(doc):
-    return doc.count('its the')
-
-def get_banned_word_count(doc):
-    return doc.count('throbbing')
 
 def get_avg_paragraph_length(paragraph_lengths):
     return sum(paragraph_lengths)/len(paragraph_lengths)
@@ -85,11 +74,12 @@ def get_bad_capitalization_count(doc):
                 count +=1
     return count
 
-def get_contraction_count(doc):
-    return doc.count("\'s") + doc.count("n\'t") + doc.count("\'m") + doc.count("\'ve")+doc.count("\'d")+doc.count("\'ll")+doc.count("\'em")
 #After Document is list of words:
 def get_avg_syllables_per_word(doc):
-    return 1
+    count = 0
+    for word in doc:
+        count += syllables(word)
+    return count/len(doc)
 def get_flesch_kincaid(number_of_words,number_of_sentences,avg_syllables_per_word):
     return 206.835-1.015*(number_of_words/number_of_sentences) - 84.6 *(avg_syllables_per_word)
 def get_word_repitition_count(document):
@@ -98,21 +88,10 @@ def get_word_repitition_count(document):
         if document[i] == document[i+1]:
             count +=1
     return count
-def get_leading_word_count(doc):
-    return doc.count('Anyway,') + doc.count('So,') + doc.count('Then,')
-#After Lexical category tagging
-def get_proper_noun_count(tags):
-    return 0
-def get_adverb_count(tags):
-    return 0
-def get_adjective_count(tags):
-    return 0
-def get_noun_count(tags):
-    return 0
 #After Document is set of words:
 def get_lexical_count(document):
     return len(document)
-#After dictionary words are removed:
 def get_non_dictionary_word_count (words,word_list):
-    return len(set(["foo","bar"]))
+    extras = word_list.difference(words)
+    return len(extras)
 
