@@ -1,3 +1,4 @@
+from __future__ import division
 import string
 import math
 import nltk
@@ -31,7 +32,7 @@ def sentence_length_list(doc):
 
 #returns list of paragraph lengths
 def paragraph_length_list(doc):
-    paragraphs = doc.split('\t')
+    paragraphs = doc.split('\n')
     lengths = []
     for i in paragraphs:
         lengths.append(len(i))
@@ -59,7 +60,7 @@ def get_length(document):
     return len(document)
 
 def get_avg_sentence_length(sentence_lengths):
-    return sum(sentence_lengths)/len(sentence_lengths)
+    return sum(sentence_lengths)/float(len(sentence_lengths))
 
 def get_sentence_length_var(sentence_lengths,avg_sentence_length):
     differences = [(x-avg_sentence_length)**2 for x in sentence_lengths]

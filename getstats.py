@@ -1,4 +1,5 @@
 from metrics import * #all function defs are here
+import string
 word_list = set(read_to_list('data/wordlist.txt')) #read dictionary
 file_names = read_to_list('data/fics/names.txt') #file names
 files=[] #all files
@@ -25,9 +26,12 @@ for doc in files:
     sentence_length_var = get_sentence_length_var(sentence_lengths,avg_sentence_length)
     coordinates.append(sentence_length_var)
     #tag counts
-    possible_tags = ('NONE','CC','CD','DT','EX','FW','IN','JJ','JJR','JJS','LS','MD','NN','NS','NNP','NNPS','PDT','POS','PRP','PRP$','RB','RBR','RBS','RP','SYM','TO','UH','VB','VBD','VBG','VBN','VBP','VBZ','WDT','WP','WPS','WRB','\"','...','(',',','!','?',';',':')
+    possible_tags = ('CC','CD','DT','EX','FW','IN','JJ','JJR','JJS','LS','MD','NN','NS','NNP','NNPS','PDT','POS','PRP','PRP$','RB','RBR','RBS','RP','SYM','TO','UH','VB','VBD','VBG','VBN','VBP','VBZ','WDT','WP','WPS','WRB')
     for tag in possible_tags:
         coordinates.append(tags.count(tag)/length)
+    #punctuation counts
+    for mark in string.punctuation:
+        coordinates.append(doc.count(mark)/length)
     #other metrics
     coordinates.append(get_paragraph_length_var(paragraph_lengths,avg_paragraph_length))
     coordinates.append(get_run_on_count(sentence_lengths,avg_sentence_length,sentence_length_var)/length)
@@ -37,3 +41,7 @@ for doc in files:
     coordinates.append(get_lexical_count(doc_set)/length)
     coordinates.append(get_non_dictionary_word_count(doc_set,word_list)/length)
     all_coordinates.append(coordinates)
+
+for i in coordinates:
+    print (i)
+
