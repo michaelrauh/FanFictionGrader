@@ -1,12 +1,16 @@
 from metrics import * #all function defs are here
 import string
+import os
 word_list = set(read_to_list('data/wordlist.txt')) #read dictionary
-file_names = read_to_list('data/fics/names.txt') #file names
+file_names = os.listdir("data/fics")
 files=[] #all files
 for i in file_names:
     document = read_to_string('data/fics/' + i)
+    if len(document) > 10000:
+        document = document[0:10000]
     files.append(document) 
 all_coordinates =[]
+i = 0
 for doc in files:
     #helpers
     coordinates = []
@@ -41,7 +45,6 @@ for doc in files:
     coordinates.append(get_lexical_count(doc_set)/length)
     coordinates.append(get_non_dictionary_word_count(doc_set,word_list)/length)
     all_coordinates.append(coordinates)
-
-for i in coordinates:
     print (i)
+    i+=1
 
