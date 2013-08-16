@@ -1,13 +1,16 @@
 import urllib2
 links = []
 favs = []
-for i in range(1,16830,10):
+names=[]
+for i in range(1,2):
     page_links = []
     page_favs = []
+    page_names = []
     print(i)
     response = urllib2.urlopen('http://www.fanfiction.net/book/Harry-Potter/?&srt=4&lan=1&r=10&p=' + str(i))
     html = response.read()
     words = html.split()
+    words2=html.split('>')
     for word in words:
         if word.find('href') != -1 and word.find('/s/') != -1:
             if word[-1] == 'g':
@@ -19,16 +22,23 @@ for i in range(1,16830,10):
     for word in range (0,len(words)-1):
         if words[word].find('Favs:') != -1:
             page_favs.append(words[word+1])
-    if len(page_links) == len(page_favs): # sometimes formatting on links is weird and one is skipped. If this happens the page is thrown out
+    for word in range (0,len(words2)):
+        if words2[word].find('href="/u')!=-1:
+            temp = words2[word+1]
+            page_names.append(temp[:temp.find('<')])
+    if len(page_links) == len(page_favs) == len(page_names): # sometimes formatting on links is weird and one is skipped. If this happens the page is thrown out
         links += page_links
         favs += page_favs
+        names += page_names
 f = open("names.txt",'w')
 for link in links:
     f.write(link)
     f.write('\n')
 f.close()
 f = open("favs.txt",'w')
-for fav in favs:
-    f.write(fav)
+for j in range (0,len(favs)):
+    f.write(favs[j])
+    f.write(' ')
+    f.write(names[j])
     f.write('\n')
 f.close()
