@@ -2,10 +2,16 @@ from metrics import * #all function defs are here
 import string
 import os
 word_list = set(read_to_list('data/wordlist.txt')) #read dictionary
-file_names = os.listdir("data/fics")
+file_names = []
+favs=[]
+names = read_to_string('data/names.txt')
+names = names.split('\n')
+for i in range (0,len(names) -1,2):
+    favs.append(names[i])
+    file_names.append(names[i+1])
 files=[] #all files
 for i in file_names:
-    document = read_to_string('data/fics/' + i)
+    document = read_to_string('data/fics/' + i + '.txt')
     if len(document) > 10000:
         document = document[0:10000]
     files.append(document) 
