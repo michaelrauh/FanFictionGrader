@@ -1,6 +1,7 @@
 from metrics import * #all function defs are here
 import string
 import os
+import pickle
 word_list = set(read_to_list('data/wordlist.txt')) #read dictionary
 file_names = []
 favs=[]
@@ -54,3 +55,5 @@ for doc in files:
     print (i)
     i+=1
 
+pickle.dump(all_coordinates,open("data/coordinates.p","wb"))
+pickle.dump(favs,open("data/favorites.p","wb"))
