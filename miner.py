@@ -3,7 +3,10 @@ links = []
 favs = []
 names=[]
 dates =[]
-for i in range(1,2):
+def tothe (x):
+    return x**1.28
+for i in map(tothe,range(1,2000)):
+    i = int(i)
     page_links = []
     page_favs = []
     page_names = []

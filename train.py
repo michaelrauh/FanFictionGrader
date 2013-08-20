@@ -16,4 +16,5 @@ for i in range (0,len(inpts)):
     ds.addSample(inpts[i],targets[i])
     
 trainer = BackpropTrainer(net,ds)
-trainer.trainUntilConvergence()
+out = trainer.trainUntilConvergence(maxEpochs = 2,verbose = False) #dataset=None, maxEpochs=None, verbose=None, continueEpochs=10, validationProportion=0.25
+print (min(out[1])) # minimum error
