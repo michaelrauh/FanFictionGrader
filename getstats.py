@@ -7,9 +7,17 @@ file_names = []
 favs=[]
 names = read_to_string('data/names.txt')
 names = names.split('\n')
+directory = os.listdir('data/fics') #all filenames actually present in directory
+# Add filenames and number of favorites if file is present. Print names of missing files
+not_found = 0
 for i in range (0,len(names) -1,2):
-    favs.append(names[i])
-    file_names.append(names[i+1])
+    if names[i+1] + '.txt' in directory:
+        favs.append(names[i])
+        file_names.append(names[i+1])
+    else:
+        print(names[i+1] + ' not found')
+        not_found += 1
+print (str(not_found) + ' files not found')
 files=[] #all files
 for i in file_names:
     document = read_to_string('data/fics/' + i + '.txt')
