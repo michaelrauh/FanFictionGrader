@@ -15,11 +15,14 @@ for i in range (0,len(names) -1,2):
         favs.append(names[i])
         file_names.append(names[i+1])
     else:
-        print(names[i+1] + ' not found')
+        #print(names[i+1] + ' not found')
         not_found += 1
 print (str(not_found) + ' files not found')
 files=[] #all files
+j = 0
 for i in file_names:
+    j+=1
+    print(j)
     document = read_to_string('data/fics/' + i + '.txt')
     if len(document) > 10000:
         document = document[0:10000]
