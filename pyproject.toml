@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "fanfictiongrader"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+jupyter = "^1.0"
+sklearn = "^0.0.0"
+nltk = "^3.4"
+matplotlib = "^3.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
